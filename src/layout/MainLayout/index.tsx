@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { BsBell } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { HiLogout } from "react-icons/hi";
+import { GlobalContext } from "~/contexts/GlobalContextProvider";
 
 const MainLayout = ({ children }: React.PropsWithChildren) => {
   const { data: sessionData, status } = useSession();
-
-  console.log(sessionData);
+  const { setWriteModalOpen } = useContext(GlobalContext);
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -29,6 +29,7 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
 
             <div>
               <button
+                onClick={() => setWriteModalOpen(true)}
                 className="flex items-center space-x-3 rounded border border-gray-200 px-4 py-2 transition
                                 hover:border-gray-900 hover:text-gray-900"
               >
