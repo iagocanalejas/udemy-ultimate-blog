@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
-import MainLayout from "../Layouts/MainLayout";
+import MainLayout from "../layouts/MainLayout";
 import { trpc } from "../utils/trpc";
 import UnsplashGallary from "../components/UnsplashGallary";
 import Image from "next/image";
@@ -77,7 +77,7 @@ const BlogPage = () => {
   return (
     <MainLayout>
       <div className="relative col-span-full mx-auto flex w-full max-w-screen-xl flex-col justify-center p-6">
-        <div className="fixed bottom-5 left-0 right-0 flex w-full items-center justify-center">
+        <div className="fixed bottom-5 right-0 left-0 flex w-full items-center justify-center">
           {blog && (
             <div className="flex items-center space-x-4 rounded-full border border-gray-300 bg-white px-5 py-2.5 text-gray-600 shadow-xl  transition-all duration-300 hover:border-gray-500 hover:text-gray-900">
               <div className="flex items-center space-x-1 border-r border-gray-300 pr-4">
@@ -125,7 +125,7 @@ const BlogPage = () => {
               )}
               <BiEdit
                 onClick={editBlogImage}
-                className="absolute left-5 top-5 z-10 cursor-pointer text-3xl text-gray-500 hover:text-black"
+                className="absolute top-5 left-5 z-10 cursor-pointer text-3xl text-gray-500 hover:text-black"
               />
               <div className="absolute inset-0 flex h-full w-full max-w-full items-center justify-center break-words  text-center  font-bold text-white">
                 <span className="rounded-xl bg-black/40 p-4 text-4xl text-white">
