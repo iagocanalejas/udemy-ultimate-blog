@@ -4,8 +4,10 @@ import { GlobalContext } from "~/contexts/GlobalContextProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { api } from "~/utils/api";
+import { toast } from "react-hot-toast";
 
-const WriteFormTypeSchema = z.object({
+export const WriteFormTypeSchema = z.object({
   title: z.string().min(20),
   description: z.string().min(60),
   body: z.string().min(100),
@@ -20,10 +22,23 @@ const WriteModalForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<WriteFormType>({
     resolver: zodResolver(WriteFormTypeSchema),
   });
-  const onSubmit = (data: WriteFormType) => console.log(data);
+
+  const postsContext = api.useContext().posts;
+
+  const createPost = api.posts.createPost.useMutation({
+    onSuccess: () => {
+      toast.success("post created successfully!");
+      setWriteModalOpen(false);
+      reset();
+      postsContext.getAll.invalidate();
+    },
+  });
+
+  const onSubmit = (data: WriteFormType) => createPost.mutate(data);
 
   return (
     <Modal isOpen={isWriteModalOpen} onClose={() => setWriteModalOpen(false)}>

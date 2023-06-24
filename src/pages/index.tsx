@@ -1,10 +1,14 @@
 import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { HiChevronRight } from "react-icons/hi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import WriteModalForm from "~/components/WriteFormModal";
 import MainLayout from "~/layout/MainLayout";
+import { api } from "~/utils/api";
 
 const Home = () => {
+  const getPosts = api.posts.getAll.useQuery();
+
   return (
     <MainLayout>
       <section className="grid grid-cols-12">
@@ -58,58 +62,56 @@ const Home = () => {
           </div>
 
           <div className="flex w-full flex-col justify-center space-y-8">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div
-                key={i}
-                className="group flex flex-col space-y-4 border-b border-gray-300 pb-4 last:border-none"
-              >
-                <div className="flex w-full items-center space-x-2">
-                  <div className="h-5 w-5 rounded-full bg-gray-400"></div>
-                  <div>
-                    <p className="font-semibold">
-                      Mi fucking nombre | en 22 Dec 2022
-                    </p>
-                    <p className="text-sm">Founder, teacher shit</p>
-                  </div>
-                </div>
-                <div className="grid w-full grid-cols-12 gap-4">
-                  <div className="col-span-8">
-                    <p className="text-2xl font-bold text-gray-800 group-hover:underline">
-                      Lorem Ipsum es simplemente el texto de relleno de las
-                      imprentas y archivos
-                    </p>
-                    <p className="break-words text-sm text-gray-500">
-                      Lorem Ipsum es simplemente el texto de relleno de las
-                      imprentas y archivos de texto. Lorem Ipsum ha sido el
-                      texto de relleno estándar de las industrias desde el año
-                      1500, cuando un impresor (N. del T. persona que se dedica
-                      a la imprenta) desconocido usó una galería de textos y los
-                      mezcló de tal manera que logró hacer un libro de textos
-                      especimen. No sólo sobrevivió 500 años, sino que tambien
-                      ingresó como texto de relleno en documentos electrónicos,
-                      quedando esencialmente
-                    </p>
-                  </div>
-                  <div className="col-span-4">
-                    <div className="h-full w-full rounded-xl bg-gray-500 transition duration-300 hover:scale-105 hover:shadow-lg"></div>
-                  </div>
-                </div>
+            {getPosts.isLoading && (
+              <div className="flex h-full w-full items-center justify-center">
+                <div>Loading...</div>
                 <div>
-                  <div className="flex w-full items-center justify-start space-x-4">
-                    <div className="flex items-center space-x-2">
-                      {Array.from({ length: 4 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className="rounded-3xl bg-gray-200/50 px-4 py-3"
-                        >
-                          tag {i}
-                        </div>
-                      ))}
+                  <AiOutlineLoading3Quarters className="animate-spin" />
+                </div>
+              </div>
+            )}
+            {getPosts.isSuccess &&
+              getPosts.data.map((post) => (
+                <div
+                  key={post.id}
+                  className="group flex flex-col space-y-4 border-b border-gray-300 pb-4 last:border-none"
+                >
+                  <div className="flex w-full items-center space-x-2">
+                    <div className="h-5 w-5 rounded-full bg-gray-400"></div>
+                    <div>
+                      <p className="font-semibold">{post.author.name}</p>
+                      <p className="text-sm">Founder, teacher shit</p>
+                    </div>
+                  </div>
+                  <div className="grid w-full grid-cols-12 gap-4">
+                    <div className="col-span-8">
+                      <p className="text-2xl font-bold text-gray-800 group-hover:underline">
+                        {post.title}
+                      </p>
+                      <p className="break-words text-sm text-gray-500">
+                        {post.description}
+                      </p>
+                    </div>
+                    <div className="col-span-4">
+                      <div className="h-full w-full rounded-xl bg-gray-500 transition duration-300 hover:scale-105 hover:shadow-lg"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex w-full items-center justify-start space-x-4">
+                      <div className="flex items-center space-x-2">
+                        {Array.from({ length: 4 }).map((_, i) => (
+                          <div
+                            key={i}
+                            className="rounded-3xl bg-gray-200/50 px-4 py-3"
+                          >
+                            tag {i}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </main>
 
